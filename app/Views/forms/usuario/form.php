@@ -41,7 +41,7 @@
             <div class="col">
                 <label class="form-label">Função</label>
                 <select name="role" class="form-select" required>
-                    <option disabled>Escolha a função do Usuário</option>
+                    <option disabled value="" selected>Escolha a função do Usuário</option>
                     <option value="c" <?= $objUsuario->role == 'c' ? 'selected' : '' ?>>Cliente</option>
                     <option value="f" <?= $objUsuario->role == 'f' ? 'selected' : '' ?>>Funcionário</option>
                     <option value="a" <?= $objUsuario->role == 'a' ? 'selected' : '' ?>>Admin</option>

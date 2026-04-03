@@ -14,31 +14,30 @@ if (isset($_GET['status'])) {
 }
 
 $res = '';
-foreach ($usuarios as $usuario) {
-    switch ($usuario->role) {
+foreach ($servicos as $servico) {
+    switch ($servico->cat) {
         case 'c':
-            $retRole = 'Cliente';
+            $retCat = 'Cabelos';
             break;
-        case 'f':
-            $retRole = 'Funcionário';
+        case 'u':
+            $retCat = 'Unhas';
             break;
-        case 'a':
-            $retRole = 'Admin';
+        case 'e':
+            $retCat = 'Estética';
             break;
     }
 
     $res .= '<tr>
-                <td class="text-center">' . $usuario->id . '</td>
-                <td class="text-center">' . $usuario->name . ' ' . $usuario->surname . '</td>
-                <td class="text-center">' . $usuario->email . '</td>
-                <td class="text-center">' . $usuario->phone_n . '</td>
-                <td class="text-center">' . $retRole . '</td>
-                <td class="text-center">' . date('d/m/Y à\s H:i:s', strtotime($usuario->created_at)) . '</td>
+                <td class="text-center">' . $servico->id . '</td>
+                <td class="text-center">' . $servico->name . '</td>
+                <td class="text-center">' . $retCat . '</td>
+                <td class="text-center">' . $servico->duration_min . '</td>
+                <td class="text-center">' . $servico->price . '</td>
                 <td class="text-center">
-                    <a href="/usuarios/editar/' . $usuario->id . '">    
+                    <a href="/servicos/editar/' . $servico->id . '">    
                         <button class="btn btn-success"><i class="bi bi-pencil-square"></i></button>
                     </a>
-                    <a href="/usuarios/excluir/' . $usuario->id . '">
+                    <a href="/servicos/excluir/' . $servico->id . '">
                         <button class="btn btn-danger"><i class="bi bi-trash-fill"></i></button>
                     </a>
                 </td>
@@ -52,16 +51,16 @@ $res = strlen($res) ? $res :    '<tr>
 ?>
 
 <section>
-    <a href="/usuarios/novo">
+    <a href="/servicos/novo">
         <div class="d-grid mb-5 mt-5">
-            <button class="btn btn-primary" type="button">Registrar Usuário</button>
+            <button class="btn btn-primary" type="button">Adicionar Serviço</button>
         </div>
     </a>
 </section>
 
 <?= $message ?>
 
-<h2 class="text-center">Lista de Usuários</h2>
+<h2 class="text-center">Lista de Serviços</h2>
 
 <section class="table-responsive">
 
@@ -70,11 +69,10 @@ $res = strlen($res) ? $res :    '<tr>
         <thead>
             <tr class="align-top text-center">
                 <th>ID</th>
-                <th>Nome Completo</th>
-                <th>Email</th>
-                <th>Telefone</th>
-                <th>Função</th>
-                <th>Criada em</th>
+                <th>Nome</th>
+                <th>Categoria</th>
+                <th>Duração (min)</th>
+                <th>Preço (R$)</th>
                 <th>Ações</th>
             </tr>
         </thead>

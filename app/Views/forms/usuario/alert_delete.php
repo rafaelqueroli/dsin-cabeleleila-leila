@@ -11,7 +11,7 @@
 
         <div class="row g-2">
             <div class="col d-grid mb-3">
-                <a href="?page=users" class="btn btn-warning">
+                <a href="/usuarios" class="btn btn-warning">
                     Cancelar
                 </a>
             </div>

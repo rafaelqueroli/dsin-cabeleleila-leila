@@ -26,7 +26,7 @@ class ControllerUsuario
 
             $objUsuario->registerUsuario();
 
-            header('location: index.php?page=users&status=success');
+            header('location: /usuarios?status=success');
             exit;
         }
 
@@ -44,14 +44,14 @@ class ControllerUsuario
         define('TITLE', 'Editar Usuário');
 
         if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
-            header('location: index.php?page=users&status=error');
+            header('location: /usuarios?status=error');
             exit;
         }
 
         $objUsuario = Usuario::getUsuario($_GET['id']);
 
         if (!$objUsuario instanceof Usuario) {
-            header('location: index.php?page=users&status=error');
+            header('location: /usuarios?status=error');
             exit;
         }
 
@@ -65,7 +65,7 @@ class ControllerUsuario
 
             $objUsuario->updateUsuario();
 
-            header('location: index.php?page=users&status=success');
+            header('location: /usuarios?status=success');
             exit;
         }
 
@@ -81,7 +81,7 @@ class ControllerUsuario
     public function delete(): void
     {
         if (!isset($_GET['id']) or !is_numeric($_GET['id'])) {
-            header('location: index.php?page=users&status=error');
+            header('location: /usuarios?status=error');
             exit;
         }
 
@@ -90,7 +90,7 @@ class ControllerUsuario
 
         // Validação do Usuário
         if (!$objUsuario instanceof Usuario) {
-            header('location: index.php?page=users&status=error');
+            header('location: /usuarios?status=error');
             exit;
         }
 
@@ -99,7 +99,7 @@ class ControllerUsuario
 
             $objUsuario->deleteUsuario();
 
-            header('location: index.php?page=users&status=success');
+                header('location: /usuarios?status=success');
             exit;
         }
 

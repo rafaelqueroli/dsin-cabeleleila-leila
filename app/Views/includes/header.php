@@ -19,16 +19,16 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="index.php">Início</a>
+                        <a class="nav-link active" aria-current="page" href="/">Início</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="?page=users">Usuários</a>
+                        <a class="nav-link" href="/usuarios">Usuários</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="?page=services">Serviços</a>
+                        <a class="nav-link" href="/servicos">Serviços</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="?page=schedules">Agendamentos</a>
+                        <a class="nav-link" href="/">Agendamentos</a>
                     </li>
                 </ul>
             </div>
