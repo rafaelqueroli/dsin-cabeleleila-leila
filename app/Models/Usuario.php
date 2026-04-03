@@ -98,7 +98,8 @@ class Usuario
      * Excluir usuário
      */
 
-    public function deleteUsuario() {
+    public function deleteUsuario()
+    {
         return (new Database('tbUsuarios'))->delete('id = ' . $this->id);
     }
 
@@ -110,6 +111,13 @@ class Usuario
         return (new Database('tbUsuarios'))->selectDB($where, $order, $limit)->fetchAll(PDO::FETCH_CLASS, self::class);
     }
 
+    /** 
+     * Método responsável por obter a quantidade de Usuários do BD
+     */
+    public static function getLenUsuarios($where = null)
+    {
+        return (new Database('tbUsuarios'))->selectDB($where, null, null, 'COUNT(*) as len')->fetchObject()->len;
+    }
     /** 
      * Método responsável por buscar um vaga com base em seu ID
      */
