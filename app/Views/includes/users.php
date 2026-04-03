@@ -1,14 +1,14 @@
 <?php
 
-$mensagem = '';
+$message = '';
 if (isset($_GET['status'])) {
     switch ($_GET['status']) {
         case 'success':
-            $mensagem = '<div class="alert alert-success mb-3">Ação executada com sucesso!</div>';
+            $message = '<div class="alert alert-success mb-3">Ação executada com sucesso!</div>';
             break;
 
         case 'error':
-            $mensagem = '<div class="alert alert-danger mb-3">Ação não executada!</div>';
+            $message = '<div class="alert alert-danger mb-3">Ação não executada!</div>';
             break;
     }
 }
@@ -28,21 +28,21 @@ foreach ($usuarios as $usuario) {
     }
 
     $res .= '<tr>
-                        <td class="text-center">' . $usuario->id . '</td>
-                        <td class="text-center">' . $usuario->name . ' ' . $usuario->surname . '</td>
-                        <td class="text-center">' . $usuario->email . '</td>
-                        <td class="text-center">' . $usuario->phone_n . '</td>
-                        <td class="text-center">' . $retRole . '</td>
-                        <td class="text-center">' . date('d/m/Y à\s H:i:s', strtotime($usuario->created_at)) . '</td>
-                        <td class="text-center">
-                            <a href="update_user.php?id=' . $usuario->id . '">    
-                                <button class="btn btn-success"><i class="bi bi-pencil-square"></i></button>
-                            </a>
-                            <a href="delete_user.php?id=' . $usuario->id . '">
-                                <button class="btn btn-danger"><i class="bi bi-trash-fill"></i></button>
-                            </a>
-                        </td>
-                    </tr>';
+                <td class="text-center">' . $usuario->id . '</td>
+                <td class="text-center">' . $usuario->name . ' ' . $usuario->surname . '</td>
+                <td class="text-center">' . $usuario->email . '</td>
+                <td class="text-center">' . $usuario->phone_n . '</td>
+                <td class="text-center">' . $retRole . '</td>
+                <td class="text-center">' . date('d/m/Y à\s H:i:s', strtotime($usuario->created_at)) . '</td>
+                <td class="text-center">
+                    <a href="index.php?page=users&action=update&id=' . $usuario->id . '">    
+                        <button class="btn btn-success"><i class="bi bi-pencil-square"></i></button>
+                    </a>
+                    <a href="index.php?page=users&action=delete&id=' . $usuario->id . '">
+                        <button class="btn btn-danger"><i class="bi bi-trash-fill"></i></button>
+                    </a>
+                </td>
+            </tr>';
 }
 
 $res = strlen($res) ? $res :    '<tr>
@@ -52,14 +52,14 @@ $res = strlen($res) ? $res :    '<tr>
 ?>
 
 <section>
-    <a href="new_user.php">
+    <a href="index.php?users=page&action=create">
         <div class="d-grid mb-5 mt-5">
             <button class="btn btn-primary" type="button">Registrar Usuário</button>
         </div>
     </a>
 </section>
 
-<?= $mensagem ?>
+<?= $message ?>
 
 <h2 class="text-center">Lista de Usuários</h2>
 

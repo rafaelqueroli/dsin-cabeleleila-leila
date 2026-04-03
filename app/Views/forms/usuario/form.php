@@ -1,9 +1,10 @@
 <section>
-    <a href="index.php">
-        <button class="btn btn-danger mt-3">Voltar</button>
-    </a>
-
-    <h2 class="mt-3"><?= TITLE ?></h2>
+    <div class="d-flex align-items-center gap-3 mt-3 mb-4">
+        <a href="javascript:history.back()">
+            <button class="btn btn-danger"><i class="bi bi-arrow-left-circle"></i> Início</button>
+        </a>
+        <h3 class="mb-0"><?= TITLE ?></h3>
+    </div>
 
     <form method="post">
         <div class="row g-2 mb-3">
@@ -55,6 +56,3 @@
         </div>
     </form>
 </section>
-
-<script src="scripts/phoneMask.js"></script>
-<script src="scripts/phoneSubmit.js"></script>
