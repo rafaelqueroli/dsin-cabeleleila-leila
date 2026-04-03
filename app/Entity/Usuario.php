@@ -78,11 +78,44 @@ class Usuario
     }
 
     /** 
+     * Atualizar Usuário no banco de daodos
+     */
+    public function updateUsuario()
+    {
+
+        //Inserir Usuário no Bnaco de dados
+        return (new Database('tbUsuarios'))->updateData('id = ' . $this->id, [
+            'name'    => $this->name,
+            'surname' => $this->surname,
+            'email'   => $this->email,
+            'phone_n' => $this->phone_n,
+            'pass'    => $this->pass,
+            'role'    => $this->role
+        ]);
+    }
+
+    /** 
+     * Excluir usuário
+     */
+
+    public function deleteUsuario() {
+        return (new Database('tbUsuarios'))->delete('id = ' . $this->id);
+    }
+
+    /** 
      * Método responsável por obter os Usuários do DB
      */
     public static function getUsuarios($where = null, $order = null, $limit = null)
     {
-        return (new Database('tbUsuarios'))->selectDB($where,$order,$limit) -> fetchAll(PDO::FETCH_CLASS,self::class);
+        return (new Database('tbUsuarios'))->selectDB($where, $order, $limit)->fetchAll(PDO::FETCH_CLASS, self::class);
+    }
+
+    /** 
+     * Método responsável por buscar um vaga com base em seu ID
+     */
+    public static function getUsuario($id)
+    {
+        return (new Database('tbUsuarios'))->selectDB('id =' . $id)->fetchObject(self::class);
     }
 }
 

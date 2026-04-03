@@ -95,8 +95,40 @@ class Database
         $order = strlen($order) ? 'ORDER BY ' . $order : '';
         $limit = strlen($limit) ? 'LIMIT ' . $limit : '';
 
-        $query = 'SELECT ' . $fields . 'FROM ' . $this->table . ' ' . $where . ' ' . $order . ' ' . $limit;
+        $query = 'SELECT ' . $fields . ' FROM ' . $this->table . ' ' . $where . ' ' . $order . ' ' . $limit;
 
         return $this->executeQuery($query);
+    }
+
+    /** 
+     * Método responsável por executar atualizações no banco de dados 
+     */
+    public function updateData($where, $data)
+    {
+        // Dados da Query
+        $fields = array_keys($data);
+
+        // Montagem da Query
+        $query = 'UPDATE ' . $this->table . ' SET ' . implode('=?, ', $fields) . '=? WHERE ' . $where;
+
+        // Executar a Query
+        $this->executeQuery($query, array_values($data));
+
+        // Retorna Sucesso
+        return true;
+    }
+
+    /** 
+     * Método responsável por excluir os dados DB
+     */
+    public function delete($where) {
+        // Monta a Query
+        $query = 'DELETE FROM ' . $this->table . ' WHERE '.$where;
+
+        // Executa a Query
+        $this->executeQuery($query);
+
+        // Retorna Sucesso
+        return true;
     }
 }
