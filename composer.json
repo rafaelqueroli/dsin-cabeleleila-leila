@@ -1,0 +1,8 @@
+{
+    "name" : "dsin/cabeleleila-leila",
+    "autoload": {
+        "psr-4": {
+            "App\\" : "app/"
+        }
+    }
+}
