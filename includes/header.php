@@ -22,6 +22,12 @@
                         <a class="nav-link active" aria-current="page" href>Início</a>
                     </li>
                 </ul>
+
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href>Início</a>
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>
