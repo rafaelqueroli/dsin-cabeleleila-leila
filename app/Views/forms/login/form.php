@@ -59,7 +59,7 @@ $alert_register = strlen($alert_register) ? '<div class="alert alert-danger">' .
 
                         <div class="mb-3">
                             <label class="form-label fw-semibold">Email</label>
-                            <input type="email" name="email" class="form-control" placeholder="exemplo@email.com" required>
+                            <input type="email" name="email" class="form-control" placeholder="seu@email.com" required>
                         </div>
 
                         <div class="mb-3">
@@ -69,7 +69,7 @@ $alert_register = strlen($alert_register) ? '<div class="alert alert-danger">' .
 
                         <div class="mb-4">
                             <label class="form-label fw-semibold">Senha</label>
-                            <input type="password" name="pass" class="form-control" placeholder="Crie uma senha forte" required>
+                            <input type="password" name="pass" class="form-control" placeholder="••••••••" required>
                         </div>
 
                         <div class="d-grid">
