@@ -1,65 +1,57 @@
 <?php
 
-// Definição do namespace pro autoload
 namespace App\Models;
 
-// Declaração do Objeto Database e do PDO
 use App\DB\Database;
 use \PDO;
 
 class Usuario
 {
-    /** 
-     * Identificador do Usuário;
+    /** * Identificador único do usuário no banco de dados.
      * @var integer
      */
     public $id;
 
-    /** 
-     * Nome do Usuário;
+    /** * Primeiro nome do usuário.
      * @var string
      */
     public $name;
 
-    /** 
-     * Nome do Usuário;
+    /** * Sobrenome do usuário.
      * @var string
      */
     public $surname;
 
-    /** 
-     * Email do Usuário;
+    /** * Endereço de e-mail (usado para autenticação).
      * @var string
      */
     public $email;
 
-    /** 
-     * Número de Telefone do Usuário;
+    /** * Número de contato telefônico.
      * @var string
      */
     public $phone_n;
 
-    public string $pass;
+    /** * Hash da senha do usuário.
+     * @var string
+     */
+    public $pass;
 
-    /** 
-     * Função do Usuário (Cliente, Funcionário e Admin);
-     * @var string('c','a')
+    /** * Nível de acesso/permissão ('c' para cliente, 'a' para admin).
+     * @var string
      */
     public $role;
 
-    /** 
-     * Date e Hora de Criação do Usuário;
-     * @var string('YYYY-MM-DD HH:MM:SS')
+    /** * Timestamp de registro do usuário.
+     * @var string Formatado como 'YYYY-MM-DD HH:MM:SS'
      */
     public $create_at;
 
-    /** 
-     * Método responsável por cadastrar um novo usuário
+    /** * Registra uma nova instância de usuário no banco de dados.
+     * @return boolean Sucesso na operação.
      */
     public function registerUsuario()
     {
-
-        //Inserir Usuário no Bnaco de dados
         $objDatabase = new Database('tbUsuarios');
         $this->id    = $objDatabase->insertData([
             'name'    => $this->name,
@@ -70,17 +62,14 @@ class Usuario
             'role'    => $this->role
         ]);
 
-        // Retorno de Sucesso
         return true;
     }
 
-    /** 
-     * Atualizar Usuário no banco de daodos
+    /** * Atualiza os dados do usuário atual com base no ID.
+     * @return boolean Sucesso na operação.
      */
     public function updateUsuario()
     {
-
-        //Inserir Usuário no Bnaco de dados
         return (new Database('tbUsuarios'))->updateData('id = ' . $this->id, [
             'name'    => $this->name,
             'surname' => $this->surname,
@@ -91,32 +80,37 @@ class Usuario
         ]);
     }
 
-    /** 
-     * Excluir usuário
+    /** * Remove o registro do usuário atual do banco de dados.
+     * @return boolean Sucesso na operação.
      */
-
     public function deleteUsuario()
     {
         return (new Database('tbUsuarios'))->delete('id = ' . $this->id);
     }
 
-    /** 
-     * Método responsável por obter os Usuários do DB
+    /** * Recupera uma coleção de usuários.
+     * @param string|null $where Condições SQL.
+     * @param string|null $order Ordenação SQL.
+     * @param string|null $limit Limitação SQL.
+     * @return array Lista de objetos da classe Usuario.
      */
     public static function getUsuarios($where = null, $order = null, $limit = null)
     {
         return (new Database('tbUsuarios'))->selectDB($where, $order, $limit)->fetchAll(PDO::FETCH_CLASS, self::class);
     }
 
-    /** 
-     * Método responsável por obter a quantidade de Usuários do BD
+    /** * Obtém a contagem total de usuários com base em um filtro.
+     * @param string|null $where Condições SQL.
+     * @return integer Quantidade de registros encontrados.
      */
     public static function getLenUsuarios($where = null)
     {
         return (new Database('tbUsuarios'))->selectDB($where, null, null, 'COUNT(*) as len')->fetchObject()->len;
     }
-    /** 
-     * Método responsável por buscar um vaga com base em seu ID
+
+    /** * Localiza um usuário específico através de seu ID único.
+     * @param integer $id
+     * @return Usuario|false Instância do usuário ou falso se não encontrado.
      */
     public static function getUsuario($id)
     {
@@ -124,16 +118,13 @@ class Usuario
     }
 
     /**
-     * Método responsável por retornar uma instância de usuário com base em seu e-mail
+     * Localiza um usuário através do endereço de e-mail.
+     * Utilizado principalmente no fluxo de login.
      * @param string $email
-     * 
-     * @return Usuario|false
+     * @return Usuario|false Instância do usuário ou falso se não encontrado.
      */
-    public static function getUsuariobyEmail($email) {
-        return (new Database('tbUsuarios'))->selectDB('email = "' .$email. '"')->fetchObject(self::class);
+    public static function getUsuariobyEmail($email)
+    {
+        return (new Database('tbUsuarios'))->selectDB('email = "' . $email . '"')->fetchObject(self::class);
     }
 }
-
-class Cliente extends Usuario {}
-
-class Admin extends Usuario {}

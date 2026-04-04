@@ -4,80 +4,79 @@ namespace App\DB;
 
 class Pagination
 {
-    /**
-     * Número máximos de registros por página
-     * @var integer
+    /** * @var integer Número máximo de registros por página.
      */
     private $limit;
 
-    /**
-     * Quantidade total de resultados do banco
-     * @var integer
+    /** * @var integer Quantidade total de registros encontrados no banco de dados.
      */
     private $res;
 
-    /**
-     * Quantidade de Páginas da Listagem
-     * @var integer
+    /** * @var integer Total de páginas calculadas.
      */
     private $pages;
 
-    /**
-     * Página Atual
-     * @var integer
+    /** * @var integer Índice da página atual.
      */
     private $current_page;
 
     /**
-     * Construtor da classe
-     * @param int $res
-     * @param int $current_page
-     * @param int $limit
+     * Inicializa a configuração da paginação.
+     * @param integer $res Total de resultados da consulta.
+     * @param integer $current_page Página solicitada pelo usuário.
+     * @param integer $limit Quantidade de itens por página.
      */
     public function __construct($res, $current_page = 1, $limit = 5)
     {
         $this->res   = $res;
         $this->limit = $limit;
-        $this->current_page = (is_numeric($current_page) && $current_page > 0) ? $current_page : 1;
+
+        // Garante que a página atual seja um número válido e positivo
+        $this->current_page = (is_numeric($current_page) && $current_page > 0) ? (int)$current_page : 1;
+
         $this->calculate();
     }
 
     /**
-     * Método Responsável pelo Cálculo da Paginação
+     * Executa o processamento matemático para determinar o total de páginas
+     * e validar se a página atual não excede o limite existente.
+     * @return void
      */
     private function calculate()
     {
-        // Cálculo do Total de Páginas
+        // Define o total de páginas utilizando o arredondamento para cima (ceil)
         $this->pages = $this->res > 0 ? ceil($this->res / $this->limit) : 1;
 
-        // Verificação da possibilidade da página atual
-        $this->current_page = $this->current_page <= $this->pages ? $this->current_page : $this->pages;
+        // Ajusta a página atual caso ela seja maior que o total de páginas disponíveis
+        if ($this->current_page > $this->pages) {
+            $this->current_page = $this->pages;
+        }
     }
 
     /**
-     * Método responsável por retornar a clausula limit do Mysql
-     * @return str
+     * Gera a string de limite para ser utilizada na query SQL (cláusula LIMIT).
+     * @return string Exemplo: "0,5" ou "10,5"
      */
     public function getLimit()
     {
+        // O offset determina a partir de qual registro o banco deve começar a leitura
         $offset = ($this->limit * ($this->current_page - 1));
         return $offset . ',' . $this->limit;
     }
 
     /**
-     * Método responsável por retornar as opções de páginas disponíveis
-     * @return array
+     * Gera uma estrutura de array com as informações de navegação.
+     * @return array Lista de páginas com indicadores de página atual.
      */
     public function getPages()
     {
-        // Não retorna páginas
-        if ($this->pages == 1) return [];
+        // Retorna vazio se houver apenas uma página (navegação desnecessária)
+        if ($this->pages <= 1) return [];
 
-        // Páginas
-        $paginas =[];
-        for ($i  = 1; $i <= $this->pages; $i++){
+        $paginas = [];
+        for ($i = 1; $i <= $this->pages; $i++) {
             $paginas[] = [
-                'p' => $i,
+                'p'       => $i,
                 'current' => $i == $this->current_page
             ];
         }

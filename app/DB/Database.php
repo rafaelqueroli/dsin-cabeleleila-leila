@@ -7,54 +7,48 @@ use PDOException;
 
 class Database
 {
-
-    /**
-     * Definição das constantes relativas às credenciais do Banco de Dados
-     */
+    /** * Configurações de acesso ao banco de dados */
     const HOST = 'localhost';
     const DB   = 'bd-cabeleleila-leila';
     const USER = 'root';
     const PASS = '';
 
-    /**
-     * Nome da tabela que está sendo acessada
-     * @var string
-     */
+    /** @var string Nome da tabela a ser manipulada */
     private $table;
 
-    /**
-     * Instancia de conexão com o banco de dados
-     * @var PDO
-     */
+    /** @var PDO Instância de conexão com o banco de dados */
     private $conn;
 
-
-    /** 
-     * Define a taebla e a instância de conexão
+    /**
+     * Define a tabela de atuação e estabelece a conexão.
+     * @param string|null $table
      */
-
     public function __construct($table = null)
     {
         $this->table = $table;
         $this->setConnection();
     }
 
-    /** 
-     * Método responsável por estabelecer a conexão com o banco
+    /**
+     * Cria a conexão com o banco de dados via PDO.
+     * Define o modo de erro para exceções para facilitar o debug.
      */
-
     private function setConnection()
     {
         try {
             $this->conn = new PDO('mysql:host=' . self::HOST . ';dbname=' . self::DB, self::USER, self::PASS);
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
-            die($e->getMessage());
+            // Em produção, o ideal é logar o erro em vez de usar die()
+            die("Erro de conexão: " . $e->getMessage());
         }
     }
 
-    /** 
-     * Método responsável por executar Queries dentro do DB
+    /**
+     * Executa consultas (Queries) no banco de dados com suporte a parâmetros (binds).
+     * @param string $query
+     * @param array $params
+     * @return \PDOStatement
      */
     public function executeQuery($query, $params = [])
     {
@@ -63,34 +57,41 @@ class Database
             $statment->execute($params);
             return $statment;
         } catch (PDOException $e) {
-            die($e->getMessage());
+            die("Erro na query: " . $e->getMessage());
         }
     }
 
-    /** 
-     * Método responsável por inserir Dados no Banco
+    /**
+     * Insere dados dinamicamente no banco.
+     * @param array $data [ campo => valor ]
+     * @return integer ID do registro inserido.
      */
     public function insertData($data)
     {
-        // Dados da Query
+        // Extrai os nomes das colunas e gera os placeholders (?)
         $fields = array_keys($data);
         $binds  = array_pad([], count($data), '?');
 
-        // Montagem da Query
+        // Montagem da instrução SQL
         $query = 'INSERT INTO ' . $this->table . ' (' . implode(',', $fields) . ') VALUES (' . implode(',', $binds) . ')';
 
-        // Insert de dados
+        // Execução com Prepared Statement para segurança
         $this->executeQuery($query, array_values($data));
 
         return $this->conn->lastInsertId();
     }
 
-    /** 
-     * Método responsável por executar uma consulta no banco
+    /**
+     * Realiza consultas SELECT de forma simplificada.
+     * @param string|null $where
+     * @param string|null $order
+     * @param string|null $limit
+     * @param string $fields
+     * @return \PDOStatement
      */
     public function selectDB($where = null, $order = null, $limit = null, $fields = '*')
     {
-        // Dados da Query
+        // Formata as cláusulas caso existam
         $where = strlen($where) ? 'WHERE ' . $where : '';
         $order = strlen($order) ? 'ORDER BY ' . $order : '';
         $limit = strlen($limit) ? 'LIMIT ' . $limit : '';
@@ -100,35 +101,34 @@ class Database
         return $this->executeQuery($query);
     }
 
-    /** 
-     * Método responsável por executar atualizações no banco de dados 
+    /**
+     * Atualiza registros com base em uma condição.
+     * @param string $where
+     * @param array $data [ campo => valor ]
+     * @return boolean
      */
     public function updateData($where, $data)
     {
-        // Dados da Query
+        // Prepara os campos para a cláusula SET (campo=?)
         $fields = array_keys($data);
+        $query  = 'UPDATE ' . $this->table . ' SET ' . implode('=?, ', $fields) . '=? WHERE ' . $where;
 
-        // Montagem da Query
-        $query = 'UPDATE ' . $this->table . ' SET ' . implode('=?, ', $fields) . '=? WHERE ' . $where;
-
-        // Executar a Query
         $this->executeQuery($query, array_values($data));
 
-        // Retorna Sucesso
         return true;
     }
 
-    /** 
-     * Método responsável por excluir os dados DB
+    /**
+     * Remove registros do banco de dados.
+     * @param string $where
+     * @return boolean
      */
-    public function delete($where) {
-        // Monta a Query
-        $query = 'DELETE FROM ' . $this->table . ' WHERE '.$where;
+    public function delete($where)
+    {
+        $query = 'DELETE FROM ' . $this->table . ' WHERE ' . $where;
 
-        // Executa a Query
         $this->executeQuery($query);
 
-        // Retorna Sucesso
         return true;
     }
 }

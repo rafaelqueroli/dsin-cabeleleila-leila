@@ -1,15 +1,25 @@
 <?php
 
+// Captura apenas o caminho da URL (excluindo query strings)
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $file = __DIR__ . $uri;
 
+/**
+ * Verificação de arquivos estáticos.
+ * Se a URI apontar para um arquivo real (CSS, JS, Imagem), o roteador 
+ * retorna 'false' para permitir que o servidor web o sirva diretamente.
+ */
 if (is_file($file)) {
     return false;
 }
 
+// Remove a barra final da URI para padronização do roteamento
 $uri = rtrim($uri, '/');
 
-// --- Rotas com ID ---
+/**
+ * Mapeamento de Rotas Dinâmicas (com IDs).
+ * Utiliza Expressões Regulares (Regex) para identificar padrões e capturar parâmetros numéricos.
+ */
 if (preg_match('#^/usuarios/editar/(\d+)$#', $uri, $matches)) {
     $_GET['action'] = 'update';
     $_GET['entity'] = 'usuario';
@@ -30,12 +40,19 @@ if (preg_match('#^/usuarios/editar/(\d+)$#', $uri, $matches)) {
     $_GET['action'] = 'update';
     $_GET['entity'] = 'agendamento';
     $_GET['id']     = $matches[1];
+} elseif (preg_match('#^/agendamentos/cancelar/(\d+)$#', $uri, $matches)) {
+    $_GET['action'] = 'cancel';
+    $_GET['entity'] = 'agendamento';
+    $_GET['id']     = $matches[1];
 } elseif (preg_match('#^/agendamentos/excluir/(\d+)$#', $uri, $matches)) {
     $_GET['action'] = 'delete';
     $_GET['entity'] = 'agendamento';
     $_GET['id']     = $matches[1];
 
-// --- Rotas simples ---
+    /**
+     * Mapeamento de Rotas Estáticas.
+     * Define a página, entidade ou ação com base em URIs fixas.
+     */
 } else {
     switch ($uri) {
         case '':
@@ -75,6 +92,19 @@ if (preg_match('#^/usuarios/editar/(\d+)$#', $uri, $matches)) {
             $_GET['entity'] = 'agendamento';
             break;
 
+        case '/minha-conta':
+            $_GET['action'] = 'account';
+            $_GET['entity'] = 'usuario';
+            break;
+        case '/minha-conta/senha':
+            $_GET['action'] = 'change-password';
+            $_GET['entity'] = 'usuario';
+            break;
+
+        /**
+         * Tratamento de Erro 404.
+         * Acionado quando nenhuma rota corresponde à URI solicitada.
+         */
         default:
             http_response_code(404);
             echo '404 - Página não encontrada';
@@ -82,4 +112,9 @@ if (preg_match('#^/usuarios/editar/(\d+)$#', $uri, $matches)) {
     }
 }
 
+/**
+ * Redirecionamento Final.
+ * Após a definição dos parâmetros $_GET via roteador, o index.php 
+ * assume o controle para processar a lógica de negócio.
+ */
 require __DIR__ . '/index.php';

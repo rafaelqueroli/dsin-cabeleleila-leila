@@ -5,30 +5,55 @@ namespace App\Session;
 class Login
 {
     /**
-     * Método responsável por iniciar a sessão
+     * Garante que a sessão do PHP esteja ativa antes de qualquer operação.
+     * @return void
      */
-    private static function initLogin() {
-        if(session_status() !== PHP_SESSION_ACTIVE) {
+    private static function initLogin()
+    {
+        if (session_status() !== PHP_SESSION_ACTIVE) {
             session_start();
         }
     }
 
     /**
-     * Método responsável por retornar os dados do usuário logado
-     * @return [type]
+     * Retorna os dados do usuário armazenados na sessão.
+     * @return array|null
      */
-    public static function getUsuarioLoged() {
+    public static function getUsuarioLoged()
+    {
         self::initLogin();
-
         return self::isLogged() ? $_SESSION['user'] : null;
     }
-    
+
     /**
-     * Método responsável por logar o usuário
-     * @param Usuario $objUsuario
-     * @return [type]
+     * Cria a sessão do usuário após validação de credenciais no Controller.
+     * @param \App\Models\Usuario $objUsuario
      */
-    public static function loginFunction($objUsuario) {
+    public static function loginFunction($objUsuario)
+    {
+        self::initLogin();
+
+        // Armazena apenas o necessário para identificar e validar permissões
+        $_SESSION['user'] = [
+            'id'         => $objUsuario->id,
+            'name'       => $objUsuario->name,
+            'surname'    => $objUsuario->surname,
+            'email'      => $objUsuario->email,
+            'phone_n'    => $objUsuario->phone_n,
+            'role'       => $objUsuario->role, // 'a' para admin, 'c' para cliente
+            'created_at' => $objUsuario->create_at,
+        ];
+
+        header('location: /');
+        exit;
+    }
+
+    /**
+     * Atualiza os dados da sessão em tempo real.
+     * Útil quando o usuário altera o próprio nome ou telefone no perfil.
+     */
+    public static function updateSession($objUsuario)
+    {
         self::initLogin();
 
         $_SESSION['user'] = [
@@ -37,56 +62,50 @@ class Login
             'surname'    => $objUsuario->surname,
             'email'      => $objUsuario->email,
             'phone_n'    => $objUsuario->phone_n,
-            'pass'       => $objUsuario->pass,
             'role'       => $objUsuario->role,
             'created_at' => $objUsuario->create_at,
         ];
+    }
 
-        //Redirecionar Usuário par index
-        header('location: /');
+    /**
+     * Encerra a sessão e limpa os dados do usuário.
+     */
+    public static function logoutFunction()
+    {
+        self::initLogin();
+        unset($_SESSION['user']);
+        header('location: /login');
         exit;
     }
 
     /**
-     * Método responsável por deslogar o usuário
-     */
-    public static function logoutFunction() {
-        self::initLogin();
-
-        unset($_SESSION['user']);
-
-        header('location: /login');
-    }
-
-    /**
-     * Método responsável por vertificar se o usuário está loggado no sistema
-     * @return bollean
+     * Verifica se existe um usuário autenticado na sessão atual.
+     * @return bool
      */
     public static function isLogged()
     {
         self::initLogin();
-
-
         return isset($_SESSION['user']['id']);
     }
 
     /**
-     * Método responsável por definir a obrigação de login para acesso
-     * @return [type]
+     * Trava de segurança: Redireciona para o login se o usuário não estiver autenticado.
+     * Ideal para proteger rotas de agendamento e perfil.
      */
-    public static function requrireLogin(){
-        if(!self::isLogged()) {
+    public static function requireLogin()
+    {
+        if (!self::isLogged()) {
             header('location: /login');
             exit;
         }
     }
 
     /**
-     * Método responsável por definir a obrigação de Loggout para acesso
-     * @return [type]
+     * Impede que um usuário já logado acesse a página de login ou cadastro.
      */
-    public static function requireLogout(){
-        if(self::isLogged()) {
+    public static function requireLogout()
+    {
+        if (self::isLogged()) {
             header('location: /');
             exit;
         }

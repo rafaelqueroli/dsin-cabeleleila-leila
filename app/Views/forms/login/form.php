@@ -5,79 +5,84 @@ $alert_register = strlen($alert_register) ? '<div class="alert alert-danger">' .
 
 ?>
 
-<main class="container p-5">
-    <div class="container">
-        <div class="row g-5">
-            <div class="col">
-                <form method="post">
-                    <div class="col">
-
-                        <h2 class="text-center">Login</h2>
+<main class="container py-5">
+    <div class="row g-4 justify-content-center">
+        
+        <div class="col-md-5">
+            <div class="card shadow-sm h-100">
+                <div class="card-body p-4">
+                    <form method="post">
+                        <h2 class="text-center mb-4 fw-bold text-primary">Login</h2>
 
                         <?= $alert_login ?>
 
-                        <div class="row mb-2">
-                            <label class="form-label">Email</label>
-                            <input type="email" class="form-control" name="email" required>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Email</label>
+                            <input type="email" class="form-control form-control-lg" name="email" placeholder="seu@email.com" required>
                         </div>
 
-                        <div class="row mb-2">
-                            <label class="form-label">Senha</label>
-                            <input type="password" class="form-control" name="pass" required>
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Senha</label>
+                            <input type="password" class="form-control form-control-lg" name="pass" placeholder="••••••••" required>
                         </div>
 
-                        <div class="row d-grid">
-                            <button type="submit" name="action" value="login" class="btn btn-primary">Efetuar Login</button>
+                        <div class="d-grid">
+                            <button type="submit" name="action" value="login" class="btn btn-primary btn-lg">
+                                <i class="bi bi-box-arrow-in-right"></i> Efetuar Login
+                            </button>
                         </div>
-                    </div>
-
-                </form>
+                    </form>
+                </div>
             </div>
+        </div>
 
-            <div class="col">
-                <form method="post">
-                    <input type="hidden" name="role" value="c">
+        <div class="col-md-6">
+            <div class="card shadow-sm border-light">
+                <div class="card-body p-4">
+                    <form method="post">
+                        <input type="hidden" name="role" value="c">
 
-                    <div class="col">
-
-                        <h2 class="text-center">Cadastrar-se</h2>
+                        <h2 class="text-center mb-4 fw-bold text-secondary">Cadastrar-se</h2>
 
                         <?= $alert_register ?>
 
-                        <div class="row mb-2">
-                            <label class="form-label">Nome</label>
-                            <input type="text" name="name" class="form-control" required>
+                        <div class="row g-2">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-semibold">Nome</label>
+                                <input type="text" name="name" class="form-control" placeholder="Ex: João" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-semibold">Sobrenome</label>
+                                <input type="text" name="surname" class="form-control" placeholder="Ex: Silva" required>
+                            </div>
                         </div>
 
-                        <div class="row mb-2">
-                            <label class="form-label">Sobrenome</label>
-                            <input type="text" name="surname" class="form-control" required>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Email</label>
+                            <input type="email" name="email" class="form-control" placeholder="exemplo@email.com" required>
                         </div>
 
-                        <div class="row mb-2">
-                            <label class="form-label">Email</label>
-                            <input type="email" name="email" class="form-control" required>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Telefone</label>
+                            <input type="tel" name="phone_n" class="phone-mask form-control" placeholder="(00) 00000-0000" required>
                         </div>
 
-                        <div class="row mb-2">
-                            <label class="form-label">Telefone</label>
-                            <input type="tel" name="phone_n" class="phone-mask form-control" required>
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Senha</label>
+                            <input type="password" name="pass" class="form-control" placeholder="Crie uma senha forte" required>
                         </div>
 
-                        <div class="row mb-2">
-                            <label class="form-label">Senha</label>
-                            <input type="password" name="pass" class="form-control" required>
+                        <div class="d-grid">
+                            <button type="submit" name="action" value="register" class="btn btn-outline-primary btn-lg">
+                                <i class="bi bi-person-plus-fill"></i> Criar Minha Conta
+                            </button>
                         </div>
-
-                        <div class="row d-grid">
-                            <button type="submit" name="action" value="register" class="btn btn-primary">Efetuar Registro</button>
-                        </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
 
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -107,3 +112,4 @@ $alert_register = strlen($alert_register) ? '<div class="alert alert-danger">' .
             });
         });
     </script>
+</main>
