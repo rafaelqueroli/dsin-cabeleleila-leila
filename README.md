@@ -37,6 +37,7 @@ composer install
 2. Renomeie ou copie este arquivo para um novo chamado `.env`.
 3. Abra o arquivo `.env` e preencha com suas credenciais locais:
 ```
+# EXEMPLO:
 DB_HOST=localhost
 DB_NAME=bd-cabeleleila-leila
 DB_USER=root
