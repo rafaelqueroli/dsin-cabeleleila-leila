@@ -54,6 +54,4 @@ Acesse o sistema em seu navegador através do endereço: http://localhost:8080.
 ---
 
 **Desenvolvido por:** Rafael Panciera Queroli
-
-Estudante de Ciência da Computação - UNIMAR
   
