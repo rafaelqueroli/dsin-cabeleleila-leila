@@ -93,7 +93,6 @@ foreach ($pages as $key => $p) {
                 <select name="role_search" class="form-select">
                     <option value="" selected>Todas as Funções</option>
                     <option value="c" <?= $role_search == 'c' ? 'selected' : '' ?>>Cliente</option>
-                    <option value="f" <?= $role_search == 'f' ? 'selected' : '' ?>>Funcionário</option>
                     <option value="a" <?= $role_search == 'a' ? 'selected' : '' ?>>Admin</option>
                 </select>
             </div>
@@ -119,7 +118,7 @@ foreach ($pages as $key => $p) {
                 <th>Nome Completo</th>
                 <th>Email</th>
                 <th>Telefone</th>
-                <th>Função</th>
+                <th>Tipo</th>
                 <th>Criada em</th>
                 <th>Ações</th>
             </tr>

@@ -5,6 +5,7 @@ namespace App\Models;
 use App\DB\Database;
 use \PDO;
 
+
 class Servico
 {
 
@@ -85,6 +86,14 @@ class Servico
     public static function getServicos($where = null, $order = null, $limit = null)
     {
         return (new Database('tbServicos'))->selectDB($where, $order, $limit)->fetchAll(PDO::FETCH_CLASS, self::class);
+    }
+
+    /** 
+     * Método responsável por obter a quantidade de Servicos do BD
+     */
+    public static function getLenServicos($where = null)
+    {
+        return (new Database('tbServicos'))->selectDB($where, null, null, 'COUNT(*) as len')->fetchObject()->len;
     }
 
     /** 

@@ -2,8 +2,21 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
-use \App\DB\Pagination;
+use App\DB\Pagination;
 use App\Models\Usuario;
+use App\Models\Servico;
+use App\Session\Login;
+
+// Obriga o usuário a estar loggado
+// Obriga o usuário a estar logado (exceto na tela de login)
+$page = $_GET['page'] ?? null;
+
+if ($page !== 'login') {
+    Login::requrireLogin();
+} else {
+    include __DIR__ . '/../app/Views/includes/login.php';
+    exit;
+}
 
 $action = $_GET['action'] ?? null;
 $entity = $_GET['entity'] ?? null;
@@ -45,38 +58,54 @@ if ($action !== null) {
     exit;
 }
 
-// Busca
-$search = $_GET['search'] ?? '';
+switch ($page) {
+    case 'users':
+        // Filtros
+        $search      = $_GET['search'] ?? '';
+        $role_search = $_GET['role_search'] ?? '';
+        $role_search = in_array($role_search, ['c', 'a']) ? $role_search : null;
 
-// Filtro de Função
-$role_search = $_GET['role_search'] ?? '';
-$role_search = in_array($role_search, ['c','f','a']) ? $role_search : null;
+        // Condições SQL
+        $conditions = array_filter([
+            strlen($search)      ? 'name LIKE "%' . $search . '%" OR surname LIKE "%' . $search . '%"' : '',
+            strlen($role_search) ? 'role = "' . $role_search . '"' : '',
+        ]);
+        $where = implode(' AND ', $conditions);
 
-// Condições SQL
-$conditions = [
-    strlen($search) ? 'name LIKE "%' . $search . '%" OR surname LIKE "%' . $search . '%"' : '',
-    strlen($role_search) ? 'role = "' . $role_search . '"' : ''
-];
-//  Remove condições vazias
-$conditions = array_filter($conditions);
+        // Paginação e dados
+        $len_usuarios   = Usuario::getLenUsuarios($where);
+        $objPagination  = new Pagination($len_usuarios, $_GET['p'] ?? 1, 5);
+        $usuarios       = Usuario::getUsuarios($where, null, $objPagination->getLimit());
+        break;
 
-// Clausula Where
-$where = implode(' AND ', $conditions);
+    case 'servicos':
+        // Filtros
+        $search = $_GET['search'] ?? '';
+        $cat_search     = $_GET['cat_search'] ?? '';
+        $cat_search     = in_array($cat_search, ['c', 'u', 'e']) ? $cat_search : null;
 
-// Quantidade total de vags
-$len_usuarios = Usuario::getLenUsuarios($where);
+        // Condições SQL
+        $conditions = array_filter([
+            strlen($search) ? 'name LIKE "%' . $search . '%"' : '',
+            strlen($cat_search)     ? 'cat = "' . $cat_search . '"' : '',
+        ]);
+        $where = implode(' AND ', $conditions);
 
-// Paginação
-$objPagination = new Pagination($len_usuarios, $_GET['p'] ?? 1, 5);
+        // Paginação e dados
+        $len_servicos  = Servico::getLenServicos($where);
+        $objPagination = new Pagination($len_servicos, $_GET['p'] ?? 1, 5);
+        $servicos      = Servico::getServicos($where, null, $objPagination->getLimit());
+        break;
 
-// Página principal
-$usuarios     = \App\Models\Usuario::getUsuarios($where,null,$objPagination->getLimit());
-$servicos     = \App\Models\Servico::getServicos();
-// $agendamentos = \App\Models\Agendamento::getAgendamentos();
+    // case 'agendamentos':
+    //     ...
+    //     break;
+}
 
 include __DIR__ . '/../app/Views/includes/header.php';
 
-switch ($_GET['page'] ?? null) {
+switch ($page) {
+
     case 'users':
         include __DIR__ . '/../app/Views/includes/users.php';
         break;

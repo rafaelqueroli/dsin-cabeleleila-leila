@@ -3,6 +3,10 @@
 namespace App\Controllers;
 
 use App\Models\Servico;
+use App\Session\Login;
+
+// Obriga o usuário a estar loggado
+Login::requrireLogin();
 
 class ControllerServico
 {

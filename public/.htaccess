@@ -1,0 +1,10 @@
+Options -Indexes
+
+RewriteEngine On
+
+# Serve arquivos e pastas que existem diretamente (JS, CSS, imagens...)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Tudo que não for arquivo real passa pelo router
+RewriteRule ^ router.php [L]

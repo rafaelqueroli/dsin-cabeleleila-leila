@@ -4,14 +4,12 @@ $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $file = __DIR__ . $uri;
 
 if (is_file($file)) {
-    return false; // PHP built-in server serve o arquivo diretamente
+    return false;
 }
 
 $uri = rtrim($uri, '/');
 
 // --- Rotas com ID ---
-
-// Usuários
 if (preg_match('#^/usuarios/editar/(\d+)$#', $uri, $matches)) {
     $_GET['action'] = 'update';
     $_GET['entity'] = 'usuario';
@@ -20,8 +18,6 @@ if (preg_match('#^/usuarios/editar/(\d+)$#', $uri, $matches)) {
     $_GET['action'] = 'delete';
     $_GET['entity'] = 'usuario';
     $_GET['id']     = $matches[1];
-
-    // Serviços
 } elseif (preg_match('#^/servicos/editar/(\d+)$#', $uri, $matches)) {
     $_GET['action'] = 'update';
     $_GET['entity'] = 'servico';
@@ -30,8 +26,6 @@ if (preg_match('#^/usuarios/editar/(\d+)$#', $uri, $matches)) {
     $_GET['action'] = 'delete';
     $_GET['entity'] = 'servico';
     $_GET['id']     = $matches[1];
-
-    // Agendamentos
 } elseif (preg_match('#^/agendamentos/editar/(\d+)$#', $uri, $matches)) {
     $_GET['action'] = 'update';
     $_GET['entity'] = 'agendamento';
@@ -41,7 +35,7 @@ if (preg_match('#^/usuarios/editar/(\d+)$#', $uri, $matches)) {
     $_GET['entity'] = 'agendamento';
     $_GET['id']     = $matches[1];
 
-    // --- Rotas simples ---
+// --- Rotas simples ---
 } else {
     switch ($uri) {
         case '':
@@ -49,8 +43,12 @@ if (preg_match('#^/usuarios/editar/(\d+)$#', $uri, $matches)) {
             $_GET['page'] = 'home';
             break;
 
+        case '/login':
+            $_GET['page'] = 'login';
+            break;
+
         case '/usuarios':
-            $_GET['page']   = 'users';
+            $_GET['page'] = 'users';
             break;
         case '/usuarios/novo':
             $_GET['action'] = 'create';
@@ -58,7 +56,7 @@ if (preg_match('#^/usuarios/editar/(\d+)$#', $uri, $matches)) {
             break;
 
         case '/servicos':
-            $_GET['page']   = 'servicos';
+            $_GET['page'] = 'servicos';
             break;
         case '/servicos/novo':
             $_GET['action'] = 'create';
@@ -66,7 +64,7 @@ if (preg_match('#^/usuarios/editar/(\d+)$#', $uri, $matches)) {
             break;
 
         case '/agendamentos':
-            $_GET['page']   = 'agendamentos';
+            $_GET['page'] = 'agendamentos';
             break;
         case '/agendamentos/novo':
             $_GET['action'] = 'create';

@@ -3,7 +3,7 @@
         <a href="javascript:history.back()">
             <button class="btn btn-danger"><i class="bi bi-arrow-left-circle"></i> Início</button>
         </a>
-        <h3 class="mb-0"><?= TITLE ?></h3>
+        <h3 class="mb-2"><?= TITLE ?></h3>
     </div>
 
     <form method="post">

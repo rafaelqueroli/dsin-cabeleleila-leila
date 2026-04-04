@@ -1,58 +1,55 @@
 <?php
 
+// Definição do namespace pro autoload
 namespace App\Models;
 
+// Declaração do Objeto Database e do PDO
 use App\DB\Database;
 use \PDO;
 
 class Usuario
 {
-
     /** 
      * Identificador do Usuário;
-     * @var integer;
+     * @var integer
      */
     public $id;
 
     /** 
      * Nome do Usuário;
-     * @var string;
+     * @var string
      */
     public $name;
 
     /** 
      * Nome do Usuário;
-     * @var string;
+     * @var string
      */
     public $surname;
 
     /** 
      * Email do Usuário;
-     * @var string;
+     * @var string
      */
     public $email;
 
     /** 
      * Número de Telefone do Usuário;
-     * @var string;
+     * @var string
      */
     public $phone_n;
 
-    /** 
-     * Senha do Usuário;
-     * @var string;
-     */
-    public $pass;
+    public string $pass;
 
     /** 
      * Função do Usuário (Cliente, Funcionário e Admin);
-     * @var string('c','f','a');
+     * @var string('c','a')
      */
     public $role;
 
     /** 
      * Date e Hora de Criação do Usuário;
-     * @var string('YYYY-MM-DD HH:MM:SS');
+     * @var string('YYYY-MM-DD HH:MM:SS')
      */
     public $create_at;
 
@@ -64,7 +61,7 @@ class Usuario
 
         //Inserir Usuário no Bnaco de dados
         $objDatabase = new Database('tbUsuarios');
-        $this->id = $objDatabase->insertData([
+        $this->id    = $objDatabase->insertData([
             'name'    => $this->name,
             'surname' => $this->surname,
             'email'   => $this->email,
@@ -125,17 +122,18 @@ class Usuario
     {
         return (new Database('tbUsuarios'))->selectDB('id =' . $id)->fetchObject(self::class);
     }
+
+    /**
+     * Método responsável por retornar uma instância de usuário com base em seu e-mail
+     * @param string $email
+     * 
+     * @return Usuario|false
+     */
+    public static function getUsuariobyEmail($email) {
+        return (new Database('tbUsuarios'))->selectDB('email = "' .$email. '"')->fetchObject(self::class);
+    }
 }
 
 class Cliente extends Usuario {}
-
-class Funcionario extends Usuario
-{
-    /** 
-     * Tipo de serviço do Funcionario;
-     * @var string('c','u','e');
-     */
-    public $cat;
-}
 
 class Admin extends Usuario {}

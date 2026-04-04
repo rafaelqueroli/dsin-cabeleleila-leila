@@ -3,11 +3,13 @@
         <a href="javascript:history.back()">
             <button class="btn btn-danger"><i class="bi bi-arrow-left-circle"></i> Início</button>
         </a>
-        <h3 class="mb-0"><?= TITLE ?></h3>
+        <h3 class="mb-2"><?= TITLE ?></h3>
     </div>
 
     <form method="post">
         <div class="row g-2 mb-3">
+            <input type="hidden" name="role" value="c">
+
             <div class="col-4">
                 <label class="form-label">Nome</label>
                 <input type="text" name="name" class="form-control" value="<?= $objUsuario->name ?>" required>
@@ -37,18 +39,6 @@
             </div>
         </div>
 
-        <div class="row g-2 mb-3">
-            <div class="col">
-                <label class="form-label">Função</label>
-                <select name="role" class="form-select" required>
-                    <option disabled value="" selected>Escolha a função do Usuário</option>
-                    <option value="c" <?= $objUsuario->role == 'c' ? 'selected' : '' ?>>Cliente</option>
-                    <option value="f" <?= $objUsuario->role == 'f' ? 'selected' : '' ?>>Funcionário</option>
-                    <option value="a" <?= $objUsuario->role == 'a' ? 'selected' : '' ?>>Admin</option>
-                </select>
-            </div>
-        </div>
-
         <div class="row g-2">
             <div class="col d-grid">
                 <button class="btn btn-primary" type="submit">Enviar</button>
@@ -56,3 +46,4 @@
         </div>
     </form>
 </section>
+
