@@ -7,40 +7,36 @@ use PDOException;
 
 class Database
 {
-    /** * Configurações de acesso ao banco de dados */
-    const HOST = 'localhost';
-    const DB   = 'bd-cabeleleila-leila';
-    const USER = 'root';
-    const PASS = '';
-
-    /** @var string Nome da tabela a ser manipulada */
+/** @var string Nome da tabela */
     private $table;
 
-    /** @var PDO Instância de conexão com o banco de dados */
+    /** @var PDO Instância de conexão */
     private $conn;
 
-    /**
-     * Define a tabela de atuação e estabelece a conexão.
-     * @param string|null $table
-     */
     public function __construct($table = null)
     {
         $this->table = $table;
         $this->setConnection();
     }
 
-    /**
-     * Cria a conexão com o banco de dados via PDO.
-     * Define o modo de erro para exceções para facilitar o debug.
-     */
     private function setConnection()
     {
         try {
-            $this->conn = new PDO('mysql:host=' . self::HOST . ';dbname=' . self::DB, self::USER, self::PASS);
+            // Buscamos os valores que o Dotenv carregou
+            $host = $_ENV['DB_HOST'];
+            $db   = $_ENV['DB_NAME'];
+            $user = $_ENV['DB_USER'];
+            $pass = $_ENV['DB_PASS'];
+            $port = $_ENV['DB_PORT'] ?? '3306';
+
+            $dsn = "mysql:host=$host;port=$port;dbname=$db;charset=utf8";
+            
+            $this->conn = new PDO($dsn, $user, $pass);
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            
         } catch (PDOException $e) {
-            // Em produção, o ideal é logar o erro em vez de usar die()
-            die("Erro de conexão: " . $e->getMessage());
+            // Dica: em desenvolvimento, mostre o erro. Em produção, oculte.
+            die("Erro crítico de conexão: " . $e->getMessage());
         }
     }
 

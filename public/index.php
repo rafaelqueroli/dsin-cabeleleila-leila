@@ -2,6 +2,12 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
+use Dotenv\Dotenv;
+
+// Carrega as variáveis do arquivo .env para o PHP
+$dotenv = Dotenv::createImmutable(__DIR__ . '/../');
+$dotenv->load();
+
 use App\DB\Pagination;
 use App\Models\Usuario;
 use App\Models\Servico;
