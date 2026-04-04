@@ -39,6 +39,7 @@ class ControllerUsuario
 
         // View do Formulário
         include __DIR__ . '/../Views/includes/header.php';
+        include __DIR__ . '/../Views/includes/navbar.php';
         include __DIR__ . '/../Views/forms/usuario/form.php';
         include __DIR__ . '/../Views/includes/footer.php';
     }
@@ -86,6 +87,7 @@ class ControllerUsuario
 
         // View do Formulário
         include __DIR__ . '/../Views/includes/header.php';
+        include __DIR__ . '/../Views/includes/navbar.php';
         include __DIR__ . '/../Views/forms/usuario/form.php';
         include __DIR__ . '/../Views/includes/footer.php';
     }
@@ -124,6 +126,7 @@ class ControllerUsuario
 
         // View do Formulário - Confirmação de Exclusão do Usuário
         include __DIR__ . '/../Views/includes/header.php';
+        include __DIR__ . '/../Views/includes/navbar.php';
         include __DIR__ . '/../Views/forms/usuario/alert_delete.php';
         include __DIR__ . '/../Views/includes/footer.php';
     }

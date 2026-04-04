@@ -18,6 +18,11 @@ if ($page !== 'login') {
     exit;
 }
 
+if ($page === 'logout') {
+    Login::logoutFunction();
+    exit;
+}
+
 $action = $_GET['action'] ?? null;
 $entity = $_GET['entity'] ?? null;
 
@@ -103,6 +108,7 @@ switch ($page) {
 }
 
 include __DIR__ . '/../app/Views/includes/header.php';
+include __DIR__ . '/../app/Views/includes/navbar.php';
 
 switch ($page) {
 

@@ -4,7 +4,6 @@ namespace App\Session;
 
 class Login
 {
-
     /**
      * Método responsável por iniciar a sessão
      */
@@ -14,6 +13,16 @@ class Login
         }
     }
 
+    /**
+     * Método responsável por retornar os dados do usuário logado
+     * @return [type]
+     */
+    public static function getUsuarioLoged() {
+        self::initLogin();
+
+        return self::isLogged() ? $_SESSION['user'] : null;
+    }
+    
     /**
      * Método responsável por logar o usuário
      * @param Usuario $objUsuario
@@ -36,6 +45,17 @@ class Login
         //Redirecionar Usuário par index
         header('location: /');
         exit;
+    }
+
+    /**
+     * Método responsável por deslogar o usuário
+     */
+    public static function logoutFunction() {
+        self::initLogin();
+
+        unset($_SESSION['user']);
+
+        header('location: /login');
     }
 
     /**

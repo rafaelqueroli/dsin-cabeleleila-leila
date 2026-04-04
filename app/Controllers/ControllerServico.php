@@ -33,6 +33,7 @@ class ControllerServico
         }
 
         include __DIR__ . '/../Views/includes/header.php';
+        include __DIR__ . '/../Views/includes/navbar.php';
         include __DIR__ . '/../Views/forms/servico/form.php';
         include __DIR__ . '/../Views/includes/footer.php';
     }
@@ -70,6 +71,7 @@ class ControllerServico
         }
 
         include __DIR__ . '/../Views/includes/header.php';
+        include __DIR__ . '/../Views/includes/navbar.php';
         include __DIR__ . '/../Views/forms/servico/form.php';
         include __DIR__ . '/../Views/includes/footer.php';
     }
@@ -104,6 +106,7 @@ class ControllerServico
         }
 
         include __DIR__ . '/../Views/includes/header.php';
+        include __DIR__ . '/../Views/includes/navbar.php';
         include __DIR__ . '/../Views/forms/servico/alert_delete.php';
         include __DIR__ . '/../Views/includes/footer.php';
     }

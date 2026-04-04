@@ -47,6 +47,10 @@ if (preg_match('#^/usuarios/editar/(\d+)$#', $uri, $matches)) {
             $_GET['page'] = 'login';
             break;
 
+        case '/logout':
+            $_GET['page'] = 'logout';
+            break;
+
         case '/usuarios':
             $_GET['page'] = 'users';
             break;

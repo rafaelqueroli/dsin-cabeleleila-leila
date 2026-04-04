@@ -2,8 +2,8 @@
 
 require __DIR__ . '/../../../vendor/autoload.php';
 
-use App\Models\Usuario;
-use App\Session\Login;
+use \App\Models\Usuario;
+use \App\Session\Login;
 
 Login::requireLogout();
 
