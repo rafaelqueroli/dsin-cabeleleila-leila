@@ -37,6 +37,7 @@ composer install
 2. Renomeie ou copie este arquivo para um novo chamado `.env`.
 3. Abra o arquivo `.env` e preencha com suas credenciais locais:
 ```
+# EXEMPLO:
 DB_HOST=localhost
 DB_NAME=bd-cabeleleila-leila
 DB_USER=root
@@ -54,6 +55,4 @@ Acesse o sistema em seu navegador através do endereço: http://localhost:8080.
 ---
 
 **Desenvolvido por:** Rafael Panciera Queroli
-
-Estudante de Ciência da Computação - UNIMAR
   

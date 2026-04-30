@@ -12,7 +12,7 @@
             <select name="cat" class="form-select" required>
                 <option value="" disabled selected>Escolha a categoria do Serviço</option>
                 <option value="c" <?= $objServico->cat == 'c' ? 'selected' : '' ?>>Cabelo</option>
-                <option value="f" <?= $objServico->cat == 'u' ? 'selected' : '' ?>>Unha</option>
+                <option value="u" <?= $objServico->cat == 'u' ? 'selected' : '' ?>>Unha</option>
                 <option value="a" <?= $objServico->cat == 'e' ? 'selected' : '' ?>>Estética</option>
             </select>
         </div>
