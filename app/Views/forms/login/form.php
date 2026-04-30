@@ -85,8 +85,8 @@ $alert_register = strlen($alert_register) ? '<div class="alert alert-danger">' .
     </div>
 
     <script>
+        // Adiciona á máscara na hora de digitar o número do telefone
         document.addEventListener('DOMContentLoaded', function() {
-            // Máscara
             const inputs = document.querySelectorAll('.phone-mask');
             inputs.forEach(input => {
                 input.addEventListener('input', function() {
@@ -103,7 +103,8 @@ $alert_register = strlen($alert_register) ? '<div class="alert alert-danger">' .
                 });
             });
         });
-        // Remove máscara antes de enviar
+
+        // Remove a máscara para enviar o número de telefone para a tabela
         document.querySelectorAll('form').forEach(form => {
             form.addEventListener('submit', function() {
                 form.querySelectorAll('.phone-mask').forEach(input => {

@@ -35,7 +35,6 @@ class Database
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             
         } catch (PDOException $e) {
-            // Dica: em desenvolvimento, mostre o erro. Em produção, oculte.
             die("Erro crítico de conexão: " . $e->getMessage());
         }
     }

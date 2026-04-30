@@ -211,45 +211,64 @@ $maxDate = date('Y-m-t', strtotime('last day of next month'));
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Referências aos elementos do formulário
         const dateInput = document.getElementById('date');
         const timeInput = document.getElementById('time_start');
         const checks = document.querySelectorAll('.servico-check');
         const btnSubmit = document.getElementById('btn-submit');
 
+        /**
+         * Recalcula o preço total, o horário de término e valida o formulário
+         * sempre que o horário de início ou os serviços selecionados mudarem.
+         */
         function calcular() {
             const timeVal = timeInput.value;
             const selecionados = [...checks].filter(c => c.checked);
 
+            // Soma a duração (em minutos) e o preço de todos os serviços marcados
             let totalMin = selecionados.reduce((s, c) => s + parseInt(c.dataset.duration), 0);
             let totalPrice = selecionados.reduce((s, c) => s + parseFloat(c.dataset.price), 0);
 
+            // Atualiza o preço total exibido no formato R$ 0,00
             document.getElementById('total_price_display').textContent =
                 'R$ ' + totalPrice.toFixed(2).replace('.', ',');
 
+            // Se não há horário ou nenhum serviço selecionado, limpa o display e encerra
             if (!timeVal || selecionados.length === 0) {
                 document.getElementById('time_end_display').textContent = '—';
                 document.getElementById('time-warning').style.display = 'none';
                 return;
             }
 
+            // Converte o horário de início em minutos e soma a duração total
             const [h, m] = timeVal.split(':').map(Number);
             const endMin = h * 60 + m + totalMin;
+
+            // Converte o resultado de volta para o formato HH:MM
             const endH = Math.floor(endMin / 60);
             const endM = endMin % 60;
             const timeEnd = String(endH).padStart(2, '0') + ':' + String(endM).padStart(2, '0');
 
+            // Exibe o horário de término calculado
             document.getElementById('time_end_display').textContent = timeEnd;
 
+            // Verifica se o atendimento ultrapassa o limite das 18h
             const ultrapass = endH > 18 || (endH === 18 && endM > 0);
             document.getElementById('time-warning').style.display = ultrapass ? 'block' : 'none';
+
+            // Bloqueia o envio do formulário se ultrapassar o horário limite
             if (btnSubmit) btnSubmit.disabled = ultrapass;
         }
 
-        // Bloqueia domingos
+        /**
+         * Impede a seleção de domingos no campo de data.
+         * Limpa o valor e exibe um aviso caso o usuário selecione um domingo.
+         */
         dateInput.addEventListener('change', function() {
             const d = new Date(this.value + 'T00:00:00');
             const warn = document.getElementById('date-warning');
-            if (d.getDay() === 0) {
+
+            if (d.getDay() === 0) { // 0 = domingo
                 warn.style.display = 'block';
                 this.value = '';
                 if (btnSubmit) btnSubmit.disabled = true;
@@ -259,9 +278,12 @@ $maxDate = date('Y-m-t', strtotime('last day of next month'));
             }
         });
 
+        // Recalcula ao marcar/desmarcar qualquer serviço ou alterar o horário
         checks.forEach(c => c.addEventListener('change', calcular));
         timeInput.addEventListener('change', calcular);
         timeInput.addEventListener('input', calcular);
+
+        // Executa ao carregar a página para refletir valores já preenchidos
         calcular();
     });
 </script>

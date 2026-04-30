@@ -10,7 +10,7 @@ use App\Session\Login;
 class ControllerAgendamento
 {
     /**
-     * Calcula o horário de término com base na duração total dos serviços.
+     * A função que calcula o Tempo de término 
      */
     private function calcularTimeEnd(string $time_start, int $total_minutos): string
     {
